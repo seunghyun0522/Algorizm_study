@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct node{
+    char data;
+    struct node *next;
+    struct node *prev;
+}NODE;
+
+typedef struct LinkedList{
+    NODE *HEAD;
+    NODE *TAIL;
+    int n;
+}List;
+
+void init(List *list);
+void addNodeBefore(NODE *p,char e);
+void add(List *list, int r, char e);
+char removeNode(NODE *p);
+char delete(List *list, int r);
+char get(List*list , int r);
+void print(List*list);
+
+int main(){
+    int count;
+    int elem_num;
+    char tmp;
+    char elem;
+    char inp;
+    List lList;
+    init(&lList);
+    
+    scanf("%d",&count);
+    getchar();
+    for(int i=0;i<count;i++){
+        scanf("%c",&inp);
+        getchar();
+        switch(inp){
+            case 'A':
+                scanf("%d %c",&elem_num,&elem);
+                getchar();
+                add(&lList,elem_num,elem);
+                break;
+            case 'D':
+                scanf("%d",&elem_num);
+                getchar();
+                tmp = delete(&lList,elem_num);
+                break;
+            case 'G':
+                
+                scanf("%d",&elem_num);
+                getchar();
+                tmp = get(&lList,elem_num);
+                break;
+            case 'P':
+                print(&lList);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void init(List *list){
+    list->HEAD = (NODE*)malloc(sizeof(NODE));
+    list->TAIL = (NODE*)malloc(sizeof(NODE));
+    list->n = 0;
+    list->HEAD->next = list->TAIL;
+    list->TAIL->prev = list->HEAD;
+}
+
+
+void addNodeBefore(NODE *p,char e){
+    NODE* q = (NODE*)malloc(sizeof(NODE));
+    q->data = e;
+    q->prev = p->prev;
+    q->next = p;
+    p->prev->next = q;
+    p->prev = q;
+}
+
+void add(List *list, int r, char e){
+    if((r<1) || (r>list->n+1)){
+        printf("invalid position\n");
+        return;
+    }
+    NODE *p = list->HEAD;
+    for(int i=0;i<r;i++){
+        p = p->next;
+    }
+    addNodeBefore(p,e);
+    (list->n)+=1;
+}
+
+char removeNode(NODE *p){
+    char e = p->data;
+    p->prev->next = p->next;
+    p->next->prev = p->prev;
+    free(p);
+    return e;
+}
+
+char delete(List *list, int r){
+    if(r<1 || r> list->n){
+        printf("invalid position\n");
+        return 0;
+    }
+    NODE *p = list->HEAD;
+    for(int i=0;i<r;i++){
+        p=p->next;
+    }
+    char e = removeNode(p);
+    list->n++;
+    return e;
+}
+char get(List*list , int r){
+    if(r<1 || r>list->n){
+        printf("invalid position\n");
+        return 1;
+    }
+    NODE *p = list->HEAD;
+    for(int i=0;i<r;i++){
+        p = p->next;
+    }
+    return p->data;
+}
+
+void print(List*list){
+    NODE*ptr = list->HEAD->next;
+    while(ptr!=list->TAIL){
+        printf("%c",ptr->data);
+        ptr = ptr->next;
+    }
+    printf("\n");
+}
