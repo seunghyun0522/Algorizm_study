@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define N 10
+typedef struct stack{
+    int buf[N];
+    int top;
+}stack;
+
+int isEmpty(stack *S);
+
+void initStack(stack* S){
+    S->top = -1;
+}
+void push(stack* S, int e){
+    if(S->top == N-1)
+    {
+        printf("fullStackException\n");
+        return;
+    }
+    S->top++;
+    S->buf[S->top]= e;
+    printf("%d\n",S->buf[S->top]);
+}
+int pop(stack *S){
+    if(isEmpty(S)){
+        printf("empty stack \n");
+    }
+    S->top = S->top -1;
+    return S->buf[S->top+1];
+}
+int main(){
+    int pop_el;
+    stack S;
+    initStack(&S);
+    push(&S,1);
+    push(&S,2);
+    push(&S,3);
+    pop_el = pop(&S);
+    printf("%d\n",pop_el);
+}
+
+int isEmpty(stack *S){
+    return S->top == -1;
+}
