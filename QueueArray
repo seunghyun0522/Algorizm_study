@@ -1,0 +1,75 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define N 10
+
+typedef struct Queue {
+	int size;
+	int adt[N];
+	int front;
+	int rear;
+}Queue;
+
+int isEmpty(Queue* q) {
+	return (q->rear + 1) % N == q->front;
+}
+
+int isFull(Queue* q) {
+	return (q->rear + 2) % N == q->front;
+}
+
+void initQueue(Queue* q) {
+	q->front = 0;
+	q->rear = N - 1;
+	
+}
+
+void enQqueue(Queue* q, int elem) {
+	if (isFull(q)) {
+		printf("full Queue Exception\n");
+	}
+	else {
+		q->rear = (q->rear + 1) % N;
+		q->adt[q->rear] = elem;
+	}
+}
+
+int deQueue(Queue* q) {
+	if (isEmpty(q)) {
+		printf("empty Queue Exception\n");
+	}
+	else {
+		int elem = q->adt[q->front];
+		q->front = (q->front + 1) % N;
+		return elem;
+	}
+}
+
+int size(Queue* q) {
+	return (N - (q->rear) + q->front + 1) % N;
+}
+int front(Queue* q) {
+	if (isEmpty(q)) {
+		printf("empty Queue \n");
+	}
+	else return q->adt[q->front];
+}
+
+
+int main() {
+	Queue q;
+	initQueue(&q);
+	 
+	enQqueue(&q, 1);
+	enQqueue(&q, 2);
+	enQqueue(&q, 4);
+	int elem;
+	elem = deQueue(&q);
+	printf("%d\n", elem);
+	elem = deQueue(&q);
+	printf("%d\n", elem);
+	elem = deQueue(&q);
+	printf("%d\n", elem);
+
+
+}
