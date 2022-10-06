@@ -1,0 +1,117 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct Node {
+	struct Node* prev;
+	struct Node* next;
+	int elem;
+}Node;
+
+typedef struct Deck{
+	struct Node* f;
+	struct Node* r;
+}Deck;
+
+void initQueue(Deck *q) {
+	q->f = NULL;
+	q->r = NULL;
+}
+
+int isEmpty(Deck* q) {
+	return q->f == NULL;
+}
+
+void addRear(Deck* q,int e) {
+	Node* p = (Node*)malloc(sizeof(Node));
+	p->elem = e;
+	p->next = NULL;
+	p->prev = NULL;
+	if (isEmpty(q)) {
+		q->f = p;
+		q->r = p;
+	}
+	else {
+		p->prev = q->r;
+		q->r->next = p;
+		q->r = p;
+	}
+}
+
+void addFront(Deck* q, int e) {
+	Node* p = (Node*)malloc(sizeof(Node));
+	p->elem = e;
+	p->next = NULL;
+	p->prev = NULL;
+	if (isEmpty(q)) {
+		q->f = p;
+		q->r = p;
+	}
+	else {
+		p->next = q->f;
+		q->f->prev = p;
+		q->f = p;
+	}
+}
+
+void emptyQueueException() {
+	printf("Empty Queue\n");
+}
+int deleteFront(Deck* q) {
+	if (isEmpty(q)) {
+		emptyQueueException();
+	}
+	else {
+		int e = q->f->elem;
+		Node *p = q->f;
+		q->f = q->f->next;
+		if (q->f == NULL)
+		{
+			q->r = NULL;
+		}
+		else {
+			q->f->prev = NULL;
+		}
+		free(p);
+		return e;
+	}
+}
+int deleteRear(Deck* q) {
+	if (isEmpty(q)) {
+		emptyQueueException();
+	}
+	else {
+		int e = q->r->elem;
+		Node* p = q->r;
+		q->r = q->r->prev;
+		if (q->r == NULL)
+		{
+			q->f = NULL;
+		}
+		else {
+			q->r->next = NULL;
+		}
+		free(p);
+		return e;
+	}
+}
+void print(Deck* q) {
+	Node* tmp = q->f;
+	while (tmp != q->r->next) {
+		printf("%d ", tmp->elem);
+		tmp = tmp->next;
+	}
+	printf("\n");
+}
+int main() {
+	Deck q;
+	int e;
+	initQueue(&q);
+	addFront(&q, 10);
+	addFront(&q, 20);
+	addRear(&q, 30);
+	print(&q);
+	deleteFront(&q);
+	deleteRear(&q);
+	print(&q);
+}
