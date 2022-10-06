@@ -1,0 +1,91 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct Que {
+	int *Q;
+	int f;
+	int r;
+}Queue;
+
+int isEmpty(Queue* q,int N) {
+	return (q->r + 1) % N == q->f;
+}
+
+int isFull(Queue* q,int N) {
+	return (q->r + 2) % N == q->f;
+}
+
+void initQueue(Queue* q, int N) {
+	q->Q = (int*)malloc(sizeof(int) * N);
+	for (int i = 0; i < N; i++)
+	{
+		q->Q[i] = 0;
+	}
+	q->f = 1;
+	q->r = 0;
+}
+
+int enQqueue(Queue* q, int N,int elem) {
+	if (isFull(q,N)) {
+		printf("overflow ");
+		return -1;
+	}
+	else {
+		q->r = (q->r + 1) % N;
+		q->Q[q->r] = elem;
+	}
+}
+
+int deQueue(Queue* q,int N) {
+	if (isEmpty(q,N)) {
+		printf("underflow\n");
+	}
+	else {
+		int elem = q->Q[q->f];
+		q->Q[q->f] = 0;
+		q->f = (q->f + 1) % N;
+		return elem;
+	}
+}
+
+void traverse(Queue* q, int N) {
+	for (int i = 0; i < N; i++) {
+		int e = q->Q[i];
+		printf("%d ", e);
+	}
+	printf("\n");
+}
+
+
+
+int main() {
+	Queue q;
+	int q_size;
+	int N;
+	int flag = 0;
+	int data;
+	char ch;
+	scanf("%d", &q_size);
+	initQueue(&q, q_size);
+	scanf("%d", &N);
+
+	while (N) {
+		getchar();
+		scanf("%c", &ch);
+		switch (ch) {
+		case 'I':
+			scanf("%d", &data);
+			flag =  enQqueue(&q, q_size, data);
+			break;
+		case 'D':
+			deQueue(&q, q_size);
+			break;
+		case'P':
+			traverse(&q, q_size);
+		}
+		if (flag == -1) traverse(&q, q_size);
+		N--;
+	}
+
+}
