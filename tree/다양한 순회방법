@@ -1,0 +1,187 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+// 적정 이진 트리
+// 완전 이진 트리
+// 포화 이진 트리
+
+typedef struct treeNode{
+    int data;
+    int id;
+    struct treeNode * left;
+    struct treeNode *right;
+}treeNode;
+
+
+typedef struct Node{
+    struct Node* next;
+    int elem;
+}Node;
+
+typedef struct Queue{
+    Node*f;
+    Node*r;
+}Queue;
+
+treeNode* insertNode(int id,int data, treeNode* left, treeNode* right){
+    //Node 생성
+    treeNode* newNode = (treeNode*)malloc(sizeof(treeNode));
+    newNode->id= id;
+    newNode->data = data;
+    newNode->left = left;
+    newNode->right = right;
+    return newNode;
+}
+
+treeNode* treeBuild(){
+    //external Node, Leaf Node
+    treeNode* f7= insertNode(7,130,NULL,NULL);
+    treeNode* f8= insertNode(8,80,NULL,NULL);
+    treeNode* f6= insertNode(6,120,f7,f8);
+    treeNode* f4= insertNode(4,70,NULL,NULL);
+    treeNode* f5= insertNode(5,90,NULL,NULL);
+    treeNode* f3= insertNode(3,50,NULL,f6);
+    treeNode* f2= insertNode(2,30,f4,f5);
+    treeNode* f1= insertNode(1,20,f2,f3);
+    return f1;
+}
+
+void visit(treeNode*v){
+    printf("%d ",v->data);
+}
+
+treeNode* leftChild(treeNode *v){
+    return v->left;
+}
+
+treeNode* rightChild(treeNode *v){
+    return v->right;
+}
+
+int isInternal(treeNode*v){
+    return ((v->left!=NULL)&&(v->right!=NULL));
+}
+
+
+
+void initQueue(Queue* Q){
+    Q->f = NULL;
+    Q->r = NULL;
+}
+
+int isEmpty(Queue *Q){
+    return Q->f == NULL;
+}
+
+void enQueue(Queue*q,int e)
+{
+    Node *p = (Node*)malloc(sizeof(Node));
+    p->elem = e;
+    p->next = NULL;
+    if(isEmpty(q)){
+        q->f =NULL;
+        q->r = NULL;
+    }
+    else {
+        q->r->next =p;
+        q->r = p;
+    }
+}
+
+int deQueue(Queue*q){
+    int e;
+    if(isEmpty(q)){
+        printf("empty Queue\n");
+        
+    }
+    else{
+         e = q->f->elem;
+        Queue *p = q->f;
+        q->f = q->f->next;
+        if(q->f==NULL){
+            q->r = NULL;
+        }
+        free(p);
+    }
+    return e;
+}
+
+//traverse
+void binaryPreOrder(treeNode*v,int n){
+   
+    if(v!=NULL){
+        if(n==v->id){
+            if(v->left==NULL){
+                printf("%d %d\n",v->data,v->right->data);
+            }
+            else if(v->right==NULL){
+                printf("%d %d\n",v->data,v->left->data);
+            
+            }
+            else if(v->right ==NULL && v->left ==NULL){
+                printf("%d\n",v->data);
+            }
+            else{
+                printf("%d %d %d\n",v->data,v->left->data,v->right->data);
+            }
+        }
+        else{
+            binaryPreOrder(leftChild(v),n);
+            binaryPreOrder(rightChild(v),n);
+        }
+    }
+    
+}
+
+void binaryPostOrder(treeNode*v){
+   
+    if(v!=NULL){
+        binaryPostOrder(leftChild(v));
+        binaryPostOrder(rightChild(v));
+        visit(v);
+    }
+}
+
+void inOrder(treeNode*v){
+   
+    if(v!=NULL){
+        
+        inOrder(leftChild(v));
+        visit(v);
+        inOrder(rightChild(v));
+        
+    }
+}
+void levelOrder(treeNode* v){
+    Queue *Q;
+    initQueue(Q);
+    enQueue(Q,v->data);
+    while(!isEmpty(Q)){
+        v->data = deQueue(Q);
+        printf("%d ",v->data);
+        if(v->left){
+            enQueue(Q,v->left->data);
+        }
+        if(v->right){
+            enQueue(Q,v->right->data);
+        }
+    }
+}
+
+
+int main(){
+    int n;
+    treeNode* root = treeBuild();
+    //levelOrder(root);
+    /*binaryPreOrder(root);
+    printf("\n");
+    binaryPostOrder(root);
+    printf("\n");
+    inOrder(root);*/
+    scanf("%d",&n);
+    //print(n,root);
+    binaryPreOrder(root,n);
+    return 0;
+}
