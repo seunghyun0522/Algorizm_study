@@ -71,6 +71,7 @@ void rBuildHeap1(int *H,int i){
         downHeap(H,i);
     }
 }
+//비재귀 버전
 void rBuildHeap2(int *H){
     for(int i=n/2;i>=1;i--) downHeap(H, i);
 }
