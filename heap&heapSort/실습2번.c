@@ -5,10 +5,10 @@ void insertItem(int *H, int k);
 void upHeap(int *H,int i);
 void swapElement(int *A, int *B);
 int removeMax(int *H);
-void rBuildHeap1(int *H,int i);
+void rBuildHeap(int *H,int i);
 void downHeap(int *H,int i);
 void printHeap(int *H);
-void rBuildHeap2(int *H);
+void BuildHeap(int *H);
 int main(){
     int *H=NULL;
     int key;
@@ -19,7 +19,7 @@ int main(){
         scanf("%d",&key);
         insertItem(H,key);
     }
-    rBuildHeap2(H);
+    //rBuildHeap2(H);
     printHeap(H);
     return 0;
 }
@@ -27,7 +27,7 @@ int main(){
 void insertItem(int *H, int k){
     n++;
     H[n] = k;
-    //upHeap(H,n);
+    upHeap(H,n);
 }
 
 void upHeap(int *H,int i){
@@ -64,15 +64,14 @@ void downHeap(int *H,int i){
 }
 
 //재귀 버전
-void rBuildHeap1(int *H,int i){
+void rBuildHeap(int *H,int i){
     if(i<=n){
-        rBuildHeap1(H,2*i);
-        rBuildHeap1(H,2*i+1);
+        rBuildHeap(H,2*i);
+        rBuildHeap(H,2*i+1);
         downHeap(H,i);
     }
 }
-//비재귀 버전
-void rBuildHeap2(int *H){
+void BuildHeap(int *H){
     for(int i=n/2;i>=1;i--) downHeap(H, i);
 }
 
