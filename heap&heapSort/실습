@@ -1,0 +1,14 @@
+실습문제 1,2,3,4
+직접 그려가며 문제를 해결해야 한다!
+
+
+1. 재귀와 비재귀를 이용한 문제. 제자리 힙 정렬
+- upheap,downheap,insertkey, deleteKey,print를 이용해 문제를 해결
+- upheap,downheap은 재귀를 이용해 해결
+-insertkey를 하고 upheap 을 호출하여 자연스럽게 정렬 
+-deleteKey를 하면서 downheap을 호출해 맨 마지막의 원소값을 처음값과 교환시켜 삭제하여 출력 
+
+2. rBuildHeap 즉 상향식 힙 정렬에는 두가지 방법 재귀, 비재귀가 있다.
+- 이것들은 downHeap의 개념을 알고있으면 해결하기 쉽다.
+- 재귀는 i<=n 으로 설정후 rBuildHeap(i*2) 와 rBuildHeap(i*2+1)을 반복하고 downHeap(i)를 호출하여 문제를 해결하면 된다.
+- 비재귀 같은 경우에는 n/2부터 i=1 일 때까지 downHeap을 해주면 된다. 
